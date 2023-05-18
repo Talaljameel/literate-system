@@ -1,7 +1,24 @@
 # This is a basic workflow to help you get started with Actions
 
 name: CI
+shareableContent = try await SCShareableContent.excludingDesktopWindows(false, 
+       onScreenWindowsOnly: false)
 
+// Get window you want to share from SCShareableContent
+guard let window : [SCWindow] = shareableContent.windows.first( where: 
+                                    { $0.windowID == windowID }) else { return } 
+
+// Create SCContentFilter for Independent Window
+let contentFilter = SCContentFilter(desktopIndependentWindow: window)
+
+// Create SCStreamConfiguration object and enable audio capture
+let streamConfig = SCStreamConfiguration()
+streamConfig.capturesAudio = true
+
+// Create stream with config and filter
+stream = SCStream(filter: contentFilter, configuration: streamConfig, delegate: self)
+stream.addStreamOutput(self, type: .screen, sampleHandlerQueue: serialQueue)
+stream.startCapture()
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
