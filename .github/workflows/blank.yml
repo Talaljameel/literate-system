@@ -1,4 +1,22 @@
-# This is a basic workflow to help you get started with Actions
+# This is a basic workflow to help you get started with ActionsAutoFill-assisted passkey request
+
+func signIn() {
+    let challenge: Data = … // Fetched from server
+    let provider =
+        ASAuthorizationPlatformPublicKeyCredentialProvider(
+            relyingPartyIdentifier: "example.com")
+    let request =
+        provider.createCredentialAssertionRequest(
+            challenge: challenge)
+
+    let controller =
+        ASAuthorizationController(
+            authorizationRequests: [request])
+    controller.delegate = self
+    controller.presentationContextProvider = self
+
+    // Start the request
+    controller.performAutoFillAssistedRequests()
 
 name: CI
 shareableContent = try await SCShareableContent.excludingDesktopWindows(false, 
