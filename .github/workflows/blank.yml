@@ -19,6 +19,14 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+streamConfiguration.width  = 1280
+streamConfiguration.height = 720
+
+// 15FPS
+streamConfiguration.minimumFrameInterval = CMTime(value: 1, timescale: CMTimeScale(15))
+
+// Update the configuration
+try await stream.updateConfiguration(streamConfiguration)
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
